@@ -1,0 +1,185 @@
+/* EVSU Research Archive Custom Styles */
+
+/* Brand colors */
+:root {
+    --evsu-primary: #003366;
+    --evsu-secondary: #0066cc;
+    --evsu-accent: #ff9900;
+    --evsu-light: #f8f9fa;
+    --evsu-dark: #343a40;
+}
+
+/* Override AdminLTE primary colors */
+.sidebar-dark-primary {
+    background-color: var(--evsu-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--evsu-primary) !important;
+}
+
+.text-primary {
+    color: var(--evsu-primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--evsu-primary) !important;
+    border-color: var(--evsu-primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--evsu-secondary) !important;
+    border-color: var(--evsu-secondary) !important;
+}
+
+/* Custom card styles */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: var(--evsu-light);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1rem;
+}
+
+.card-title {
+    color: var(--evsu-primary);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+/* Publication card styles */
+.publication-card {
+    transition: transform 0.3s ease;
+}
+
+.publication-card:hover {
+    transform: translateY(-5px);
+}
+
+.publication-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.publication-card .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.publication-card .card-text {
+    color: #6c757d;
+}
+
+.publication-card .badge {
+    margin-right: 0.5rem;
+}
+
+/* Search form styles */
+.search-form {
+    background-color: var(--evsu-light);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.search-form .form-control {
+    border-radius: 0.25rem;
+}
+
+.search-form .btn {
+    border-radius: 0.25rem;
+}
+
+/* Table styles */
+.table thead th {
+    background-color: var(--evsu-light);
+    border-bottom: 2px solid #dee2e6;
+    color: var(--evsu-primary);
+    font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 102, 204, 0.05);
+}
+
+/* Pagination styles */
+.pagination .page-item.active .page-link {
+    background-color: var(--evsu-primary);
+    border-color: var(--evsu-primary);
+}
+
+.pagination .page-link {
+    color: var(--evsu-primary);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--evsu-light);
+    color: var(--evsu-secondary);
+}
+
+/* Form styles */
+.form-control:focus {
+    border-color: var(--evsu-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+}
+
+/* Alert styles */
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+/* Footer styles */
+.main-footer {
+    background-color: var(--evsu-light);
+    border-top: 1px solid #dee2e6;
+    color: var(--evsu-dark);
+    padding: 1rem 0;
+}
+
+.main-footer a {
+    color: var(--evsu-primary);
+}
+
+.main-footer a:hover {
+    color: var(--evsu-secondary);
+    text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .publication-card .card-img-top {
+        height: 150px;
+    }
+
+    .search-form {
+        padding: 1rem;
+    }
+}
