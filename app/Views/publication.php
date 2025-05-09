@@ -1,4 +1,3 @@
-
 <?php
 // Initialize session
 session_start();
@@ -26,11 +25,12 @@ if (mysqli_num_rows($result) == 0) {
 
 $publication = mysqli_fetch_assoc($result);
 
-// Include header
-include_once 'includes/header.php';
+// Include header with default navbar
+include_once 'layouts/default.php';
 ?>
 
-<main class="container py-4">
+<?= $this->section('content') ?>
+<div class="container py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -158,8 +158,6 @@ include_once 'includes/header.php';
             <?php endif; ?>
         </div>
     </div>
-</main>
+</div>
 
-<?php
-include_once 'includes/footer.php';
-?>
+<?= $this->endSection() ?>

@@ -92,7 +92,9 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light mb-4">
         <div class="container">
-            <a class="navbar-brand" href="<?= base_url() ?>">EVSU Research Archive</a>
+            <a class="navbar-brand" href="<?= base_url() ?>">
+                <img src="https://i.imgur.com/uMwLaVQ.png" alt="EVSU Logo" style="height: 50px; width: auto;">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

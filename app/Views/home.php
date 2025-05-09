@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <img src="<?= base_url('assets/images/hero-image.jpg') ?>" alt="Research Archive" class="img-fluid rounded shadow-lg">
+            <img src="https://i.imgur.com/4GYD4hu.png" alt="Research Archive" class="img-fluid rounded shadow-lg">
         </div>
     </div>
 

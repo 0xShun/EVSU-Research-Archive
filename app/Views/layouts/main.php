@@ -29,6 +29,12 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('user/login') ?>">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('user/register') ?>">Register</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
@@ -41,8 +47,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?= base_url() ?>" class="brand-link">
-      <img src="<?= base_url('assets/img/evsu-logo.png') ?>" alt="EVSU Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">EVSU Research</span>
+      <img src="https://i.imgur.com/4GYD4hu.png" alt="EVSU Logo" class="brand-image img-circle elevation-3" style="height: 40px; width: auto;">
     </a>
 
     <!-- Sidebar -->

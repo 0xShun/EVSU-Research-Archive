@@ -1,4 +1,4 @@
-<?= $this->extend('header') ?>
+<?= $this->extend('layouts/default') ?>
 
 <?= $this->section('content') ?>
 <div class="row mb-4">
@@ -46,16 +46,10 @@
                         <h2 class="h5 text-danger">Publication Details</h2>
                         <ul class="list-unstyled">
                             <li class="mb-2">
-                                <strong>Type:</strong> <?= ucfirst(esc($publication['type'])) ?>
+                                <strong>Department:</strong> <?= esc($publication['department_id']) ?>
                             </li>
                             <li class="mb-2">
-                                <strong>Year:</strong> <?= esc($publication['year']) ?>
-                            </li>
-                            <li class="mb-2">
-                                <strong>Department:</strong> <?= esc($publication['department']) ?>
-                            </li>
-                            <li class="mb-2">
-                                <strong>Program:</strong> <?= esc($publication['program']) ?>
+                                <strong>Program:</strong> <?= esc($publication['program_id']) ?>
                             </li>
                         </ul>
                     </div>
@@ -106,7 +100,7 @@
                             </h3>
                             <p class="small text-muted mb-0">
                                 <?= esc($related['authors']) ?><br>
-                                <?= esc($related['year']) ?>
+                                <?= date('Y', strtotime($related['publication_date'])) ?>
                             </p>
                         </div>
                     <?php endforeach; ?>

@@ -58,3 +58,16 @@ if (ENVIRONMENT === 'testing') {
         $routes->get('userexperience', 'Test::userexperience');
     });
 }
+
+// User routes
+$routes->get('user/register', 'UserController::register');
+$routes->post('user/register', 'UserController::register');
+$routes->get('user/login', 'UserController::login');
+$routes->post('user/login', 'UserController::login');
+$routes->get('user/logout', 'UserController::logout');
+
+// Admin routes
+$routes->get('admin', 'AdminController::index');
+$routes->get('admin/manage-users', 'AdminController::manageUsers');
+$routes->get('admin/manage-submissions', 'AdminController::manageSubmissions');
+$routes->get('admin/view-analytics', 'AdminController::viewAnalytics');

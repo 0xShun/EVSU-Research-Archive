@@ -12,6 +12,41 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control form-control-lg" id="searchQuery" name="q" placeholder="Search by title, author, keywords..." value="<?= esc($query ?? '') ?>">
                         </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="college_id" name="college_id">
+                                <option value="">All Colleges</option>
+                                <?php foreach ($colleges as $college): ?>
+                                    <option value="<?= $college['id'] ?>" <?= ($college_id == $college['id']) ? 'selected' : '' ?>>
+                                        <?= esc($college['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="department_id" name="department_id">
+                                <option value="">All Departments</option>
+                                <?php foreach ($departments as $department): ?>
+                                    <option value="<?= $department['id'] ?>" <?= ($department_id == $department['id']) ? 'selected' : '' ?>>
+                                        <?= esc($department['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="year" name="year">
+                                <option value="">All Years</option>
+                                <?php for($i = date('Y'); $i >= 2000; $i--): ?>
+                                    <option value="<?= $i ?>" <?= ($year == $i) ? 'selected' : '' ?>><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="category" name="category">
+                                <option value="">All Categories</option>
+                                <option value="thesis">Thesis</option>
+                                <option value="capstone">Capstone</option>
+                            </select>
+                        </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-primary btn-lg w-100">
                                 <i class="fas fa-search me-2"></i>Search

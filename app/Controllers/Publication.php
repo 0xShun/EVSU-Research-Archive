@@ -88,7 +88,9 @@ class Publication extends BaseController
 
     public function upload()
     {
-        return view('upload_publication');
+        $colleges = $this->collegeModel->findAll();
+        $departments = $this->departmentModel->findAll();
+        return view('upload_publication', ['colleges' => $colleges, 'departments' => $departments]);
     }
 
     public function create()
@@ -141,9 +143,11 @@ class Publication extends BaseController
         $relatedPublications = $this->publicationModel
             ->where('id !=', $id)
             ->where('department_id', $publication['department_id'])
-            ->orWhere("FIND_IN_SET(?, keywords)", explode(',', $publication['keywords']))
+            ->orGroupStart()
+                ->whereIn('keywords', explode(',', $publication['keywords']))
+            ->groupEnd()
             ->limit(5)
-            ->find();
+            ->findAll();
 
         return view('view_publication', [
             'publication' => $publication,
@@ -265,6 +269,7 @@ class Publication extends BaseController
         $department_id = $this->request->getGet('department_id');
         $program_id = $this->request->getGet('program_id');
         $year = $this->request->getGet('year');
+        $category = $this->request->getGet('category');
 
         $query = $this->publicationModel->builder();
 
@@ -283,12 +288,15 @@ class Publication extends BaseController
         if ($department_id) {
             $query->where('department_id', $department_id);
         }
-        if ($program_id) {
-            $query->where('program_id', $program_id);
-        }
         if ($year) {
             $query->where('YEAR(publication_date)', $year);
         }
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        $colleges = $this->collegeModel->findAll();
+        $departments = $this->departmentModel->findAll();
 
         $data = [
             'publications' => $query->get()->getResultArray(),
@@ -296,7 +304,9 @@ class Publication extends BaseController
             'college_id' => $college_id,
             'department_id' => $department_id,
             'program_id' => $program_id,
-            'year' => $year
+            'year' => $year,
+            'colleges' => $colleges,
+            'departments' => $departments
         ];
 
         return view('search', $data);
