@@ -46,10 +46,10 @@
                         <h2 class="h5 text-danger">Publication Details</h2>
                         <ul class="list-unstyled">
                             <li class="mb-2">
-                                <strong>Department:</strong> <?= esc($publication['department_id']) ?>
+                                <strong>Department:</strong> <?= esc($publication['department_name']) ?>
                             </li>
                             <li class="mb-2">
-                                <strong>Program:</strong> <?= esc($publication['program_id']) ?>
+                                <strong>Program:</strong> <?= esc($publication['program_name']) ?>
                             </li>
                         </ul>
                     </div>
@@ -57,7 +57,7 @@
 
                 <?php if (!empty($publication['file_path'])): ?>
                     <div class="mb-4">
-                        <a href="<?= base_url('uploads/' . $publication['file_path']) ?>" class="btn btn-primary" target="_blank">
+                        <a href="<?= base_url('publications/download/' . $publication['id']) ?>" class="btn btn-primary">
                             <i class="fas fa-download me-2"></i>Download Publication
                         </a>
                     </div>

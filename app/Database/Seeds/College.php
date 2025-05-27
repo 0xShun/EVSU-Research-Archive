@@ -8,6 +8,9 @@ class College extends Seeder
 {
     public function run()
     {
+        // Clear existing data
+        $this->db->table('colleges')->truncate();
+
         $data = [
             [
                 'name' => 'College of Architecture and Allied Discipline',

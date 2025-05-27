@@ -19,7 +19,7 @@ $routes->get('about', 'Home::about');
 $routes->get('contact', 'Home::contact');
 
 // Publication routes
-$routes->get('publications', 'Publication::index');
+$routes->get('publication', 'Publication::index');
 $routes->get('publications/upload', 'Publication::upload');
 $routes->get('publications/create', 'Publication::create');
 $routes->post('publications/create', 'Publication::create');

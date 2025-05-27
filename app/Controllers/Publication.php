@@ -5,18 +5,21 @@ namespace App\Controllers;
 use App\Models\PublicationModel;
 use App\Models\CollegeModel;
 use App\Models\DepartmentModel;
+use App\Models\ProgramModel;
 
 class Publication extends BaseController
 {
     protected $publicationModel;
     protected $collegeModel;
     protected $departmentModel;
+    protected $programModel;
 
     public function __construct()
     {
         $this->publicationModel = new PublicationModel();
         $this->collegeModel = new CollegeModel();
         $this->departmentModel = new DepartmentModel();
+        $this->programModel = new ProgramModel();
     }
 
     public function index()
@@ -88,9 +91,8 @@ class Publication extends BaseController
 
     public function upload()
     {
-        $colleges = $this->collegeModel->findAll();
-        $departments = $this->departmentModel->findAll();
-        return view('upload_publication', ['colleges' => $colleges, 'departments' => $departments]);
+        $colleges = $this->collegeModel->orderBy('name', 'ASC')->findAll();
+        return view('upload_publication', ['colleges' => $colleges]);
     }
 
     public function create()
@@ -139,6 +141,14 @@ class Publication extends BaseController
         if (!$publication) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
+
+        // Fetch department and program names
+        $department = $this->departmentModel->find($publication['department_id']);
+        $program = $this->programModel->find($publication['program_id']);
+
+        // Add department and program names to the publication data
+        $publication['department_name'] = $department ? $department['name'] : 'N/A';
+        $publication['program_name'] = $program ? $program['name'] : 'N/A';
 
         $relatedPublications = $this->publicationModel
             ->where('id !=', $id)
