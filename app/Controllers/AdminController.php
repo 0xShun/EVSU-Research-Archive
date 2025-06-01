@@ -2,14 +2,14 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\Controller;
+use App\Controllers\BaseController;
 
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     public function index()
     {
-        // Load admin dashboard view
-        return view('admin/dashboard');
+        // Load the admin dashboard view
+        return view('admin/index');
     }
 
     public function manageUsers()

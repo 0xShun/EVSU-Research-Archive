@@ -1,7 +1,29 @@
 <?= $this->extend('layouts/default') ?>
 
 <?= $this->section('content') ?>
-<div class="container">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Welcome to EVSU Research Archive</h2>
+            <p>Browse and search for research publications from Eastern Visayas State University.</p>
+
+            <!-- Search Bar -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title">Search Publications</h5>
+                </div>
+                <div class="card-body">
+                    <form action="<?= base_url('publications/search') ?>" method="get">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control" placeholder="Search for publications...">
+                            <button type="submit" class="btn btn-outline-secondary">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <div class="row align-items-center py-5">
         <div class="col-md-6">

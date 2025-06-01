@@ -13,26 +13,49 @@ $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 
-// Home routes
+// Public routes (no auth required)
 $routes->get('/', 'Home::index');
-$routes->get('about', 'Home::about');
-$routes->get('contact', 'Home::contact');
+$routes->get('login', 'UserController::login');
+$routes->get('user/login', 'UserController::login');
+$routes->post('user/login', 'UserController::login');
+$routes->get('user/register', 'UserController::register');
+$routes->post('user/register', 'UserController::register');
 
-// Publication routes
-$routes->get('publication', 'Publication::index');
-$routes->get('publications/upload', 'Publication::upload');
-$routes->get('publications/create', 'Publication::create');
-$routes->post('publications/create', 'Publication::create');
-$routes->get('publications/view/(:num)', 'Publication::view/$1');
-$routes->get('publications/edit/(:num)', 'Publication::edit/$1');
-$routes->post('publications/edit/(:num)', 'Publication::edit/$1');
-$routes->get('publications/delete/(:num)', 'Publication::delete/$1');
-$routes->get('publications/download/(:num)', 'Publication::download/$1');
-$routes->get('publications/search', 'Publication::search');
-$routes->post('publications/search', 'Publication::search');
+// These routes were previously protected but now accessible without login
+    // Home routes
+    $routes->get('about', 'Home::about');
+    $routes->get('contact', 'Home::contact');
+    
+    // Publication routes
+    $routes->get('publication', 'Publication::index');
+    $routes->get('publications', 'Publication::index');
+    $routes->get('publications/upload', 'Publication::upload');
+    $routes->get('publications/create', 'Publication::create');
+    $routes->post('publications/create', 'Publication::create');
+    $routes->get('publications/view/(:num)', 'Publication::view/$1');
+    $routes->get('publications/edit/(:num)', 'Publication::edit/$1');
+    $routes->post('publications/edit/(:num)', 'Publication::edit/$1');
+    $routes->get('publications/delete/(:num)', 'Publication::delete/$1');
+    $routes->get('publications/download/(:num)', 'Publication::download/$1');
+    $routes->get('publications/search', 'Publication::search');
+    $routes->post('publications/search', 'Publication::search');
+    
+    // Profile routes
+    $routes->get('profile', 'ProfileController::index');
+    $routes->post('profile/update', 'ProfileController::update');
+    $routes->get('user/logout', 'UserController::logout');
+
+// Protected routes (auth required)
+$routes->group('', ['filter' => 'auth'], function($routes) {
+    // Admin routes
+    $routes->get('admin', 'AdminController::index');
+    $routes->get('admin/manage-users', 'AdminController::manageUsers');
+    $routes->get('admin/manage-submissions', 'AdminController::manageSubmissions');
+    $routes->get('admin/view-analytics', 'AdminController::viewAnalytics');
+});
 
 // API routes
-$routes->group('api', function($routes) {
+$routes->group('api', ['filter' => 'auth'], function($routes) {
     $routes->get('colleges/(:num)/departments', 'Api::getDepartments/$1');
     $routes->get('departments/(:num)/programs', 'Api::getPrograms/$1');
     $routes->get('publications/search', 'Api::searchPublications');
@@ -58,16 +81,3 @@ if (ENVIRONMENT === 'testing') {
         $routes->get('userexperience', 'Test::userexperience');
     });
 }
-
-// User routes
-$routes->get('user/register', 'UserController::register');
-$routes->post('user/register', 'UserController::register');
-$routes->get('user/login', 'UserController::login');
-$routes->post('user/login', 'UserController::login');
-$routes->get('user/logout', 'UserController::logout');
-
-// Admin routes
-$routes->get('admin', 'AdminController::index');
-$routes->get('admin/manage-users', 'AdminController::manageUsers');
-$routes->get('admin/manage-submissions', 'AdminController::manageSubmissions');
-$routes->get('admin/view-analytics', 'AdminController::viewAnalytics');
