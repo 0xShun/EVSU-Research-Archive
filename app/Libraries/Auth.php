@@ -25,14 +25,32 @@ class Auth
      */
     public function attempt(string $email, string $password, bool $remember = false): bool
     {
+        log_message('info', 'Auth::attempt - Attempting login for email: ' . $email);
+
         $user = $this->userModel->where('email', $email)->first();
 
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (!$user) {
+            log_message('info', 'Auth::attempt - User not found for email: ' . $email);
             return false;
         }
 
+        log_message('info', 'Auth::attempt - User found: ' . $user['email']);
+        log_message('info', 'Auth::attempt - Verifying password...');
+
+        if (!password_verify($password, $user['password'])) {
+            log_message('info', 'Auth::attempt - Password verification failed for email: ' . $email);
+            return false;
+        }
+
+        log_message('info', 'Auth::attempt - Password verification successful for email: ' . $email);
+
         if (!$user['is_active']) {
             return false;
+        }
+
+        // Check if email is verified before logging in
+        if (config('Auth')->requireEmailVerification && !$user['email_verified_at']) {
+            return false; // Email not verified
         }
 
         // Update last login

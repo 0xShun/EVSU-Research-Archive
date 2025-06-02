@@ -7,11 +7,11 @@ use CodeIgniter\I18n\Time;
 
 class UserModel extends Model
 {
-    protected $table = 'users';
+    protected $table = 'actors';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
     
     protected $allowedFields = [
         'name', 'email', 'password', 'role', 'is_active',
@@ -22,13 +22,12 @@ class UserModel extends Model
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    protected $deletedField = 'deleted_at';
 
     protected $validationRules = [
         'name' => 'required|min_length[3]|max_length[100]',
-        'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
+        'email' => 'required|valid_email|is_unique[actors.email,id,{id}]',
         'password' => 'required|min_length[8]',
-        'role' => 'required|in_list[admin,faculty,student,researcher]'
+        'role' => 'required|in_list[Student,Faculty & Researcher,Thesis Adviser,University Administration]'
     ];
 
     protected $validationMessages = [

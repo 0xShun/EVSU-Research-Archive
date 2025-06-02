@@ -92,6 +92,16 @@ class AuthController extends BaseController
         $redirect = session()->get('redirect_after_login') ?? base_url();
         session()->remove('redirect_after_login');
 
+        log_message('info', 'Login: Authentication successful.');
+        session()->set([
+            'user_id' => $user['id'],
+            'name' => $user['name'],
+            'role' => $user['role'],
+            'isLoggedIn' => true
+        ]);
+
+        session()->setFlashdata('message', 'Successfully logged in.');
+
         return redirect()->to($redirect)
                         ->with('success', 'Welcome back, ' . $user['name'] . '!');
     }
@@ -116,7 +126,7 @@ class AuthController extends BaseController
     {
         $rules = [
             'name' => 'required|min_length[3]|max_length[100]',
-            'email' => 'required|valid_email|is_unique[users.email]',
+            'email' => 'required|valid_email|is_unique[actors.email]',
             'password' => 'required|min_length[8]',
             'password_confirm' => 'required|matches[password]'
         ];
@@ -171,7 +181,7 @@ class AuthController extends BaseController
     public function logout()
     {
         $this->auth->logout();
-        return redirect()->to(base_url('login'))
+        return redirect()->to(base_url('auth/login'))
                         ->with('success', 'You have been logged out successfully.');
     }
 

@@ -22,7 +22,6 @@
         <div class="container">
             <a class="navbar-brand" href="<?= base_url() ?>">
                 <img src="https://i.imgur.com/uMwLaVQ.png" alt="EVSU Logo" style="height: 40px;">
-                EVSU Research Archive
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -47,7 +46,8 @@
                     <?php if (session()->get('isLoggedIn')): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?= session()->get('username') ?>
+                                <img src="<?= base_url('assets/user-default.png') ?>" alt="Profile Picture" class="rounded-circle me-1" style="width: 30px; height: 30px;">
+                                <?= session()->get('name') // Using 'name' as per actors table ?>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profile</a></li>
@@ -55,7 +55,7 @@
                                     <li><a class="dropdown-item" href="<?= base_url('admin') ?>">Admin Panel</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="<?= base_url('user/logout') ?>">Logout</a></li>
+                                <li><a class="dropdown-item" href="<?= base_url('auth/logout') ?>">Logout</a></li>
                             </ul>
                         </li>
                     <?php else: ?>

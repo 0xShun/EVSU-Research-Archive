@@ -21,7 +21,8 @@ class PublicationModel extends Model
         'program_id',
         'publication_date',
         'file_path',
-        'thumbnail'
+        'thumbnail',
+        'user_id'
     ];
 
     protected $useTimestamps = true;
@@ -36,7 +37,8 @@ class PublicationModel extends Model
         'college_id' => 'required|numeric',
         'department_id' => 'required|numeric',
         'program_id' => 'required|numeric',
-        'publication_date' => 'required|valid_date'
+        'publication_date' => 'required|valid_date',
+        'user_id' => 'required|numeric'
     ];
 
     protected $validationMessages = [
@@ -73,6 +75,10 @@ class PublicationModel extends Model
         'publication_date' => [
             'required' => 'The publication date field is required.',
             'valid_date' => 'The publication date must be a valid date.'
+        ],
+        'user_id' => [
+            'required' => 'The user ID field is required.',
+            'numeric' => 'The user ID must be a number.'
         ]
     ];
 

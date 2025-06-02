@@ -50,21 +50,21 @@ class Auth extends BaseConfig
      * Allowed roles
      */
     public array $roles = [
-        'admin' => 'Administrator',
-        'faculty' => 'Faculty Member',
-        'student' => 'Student',
-        'researcher' => 'Researcher'
+        'Student' => 'Student',
+        'Faculty & Researcher' => 'Faculty & Researcher',
+        'Thesis Adviser' => 'Thesis Adviser',
+        'University Administration' => 'University Administration',
     ];
 
     /**
      * Default role for new users
      */
-    public string $defaultRole = 'student';
+    public string $defaultRole = 'Student';
 
     /**
      * Email verification required
      */
-    public bool $requireEmailVerification = true;
+    public bool $requireEmailVerification = false;
 
     /**
      * Email verification expiry in hours

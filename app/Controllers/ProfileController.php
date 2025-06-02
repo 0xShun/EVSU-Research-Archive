@@ -19,7 +19,7 @@ class ProfileController extends BaseController
     public function index()
     {
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $userId = session()->get('user_id');
@@ -35,19 +35,14 @@ class ProfileController extends BaseController
     public function update()
     {
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/login');
+            return redirect()->to(base_url('auth/login'));
         }
 
         $userId = session()->get('user_id');
-        $data = $this->request->getPost();
-
-        // Handle profile picture upload
-        $profilePicture = $this->request->getFile('profile_picture');
-        if ($profilePicture && $profilePicture->isValid() && !$profilePicture->hasMoved()) {
-            $newName = $profilePicture->getRandomName();
-            $profilePicture->move(WRITEPATH . 'uploads/profile_pictures', $newName);
-            $data['profile_picture'] = 'uploads/profile_pictures/' . $newName;
-        }
+        $data = $this->request->getPost([
+            'name',
+            'research_interests'
+        ]);
 
         // Remove empty fields to prevent overwriting with empty values
         foreach ($data as $key => $value) {
@@ -57,9 +52,13 @@ class ProfileController extends BaseController
         }
 
         if ($this->userModel->update($userId, $data)) {
-            session()->setFlashdata('success', 'Profile updated successfully');
+            // Update session data if name changed
+            if (isset($data['name'])) {
+                session()->set('name', $data['name']);
+            }
+            session()->setFlashdata('success', 'Profile updated successfully.');
         } else {
-            session()->setFlashdata('error', 'Failed to update profile');
+            session()->setFlashdata('error', 'Failed to update profile.');
         }
 
         return redirect()->to('/profile');

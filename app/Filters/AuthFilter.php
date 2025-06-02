@@ -19,7 +19,7 @@ class AuthFilter implements FilterInterface
             $session->set('redirect_after_login', current_url());
             
             // Redirect to login page
-            return redirect()->to(base_url('login'))
+            return redirect()->to(base_url('auth/login'))
                            ->with('error', 'Please login to access this page.');
         }
 
