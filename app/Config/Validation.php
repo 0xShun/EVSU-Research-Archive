@@ -7,6 +7,7 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
+use App\Models\UserModel;
 
 class Validation extends BaseConfig
 {
@@ -18,7 +19,7 @@ class Validation extends BaseConfig
      * Stores the classes that contain the
      * rules that are available.
      *
-     * @var list<string>
+     * @var string[]
      */
     public array $ruleSets = [
         Rules::class,
@@ -41,4 +42,14 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    // Add custom validation rules here
+    public array $rules = [
+        // Custom rules should be defined in a separate class and added to $ruleSets
+    ];
+
+     public array $methods = [
+         // Methods should be defined in a separate class and added to $ruleSets
+     ];
+
 }

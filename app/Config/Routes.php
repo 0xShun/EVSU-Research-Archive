@@ -15,46 +15,62 @@ $routes->set404Override();
 
 // Public routes (no auth required)
 $routes->get('/', 'Home::index');
-$routes->get('login', 'UserController::login');
-$routes->get('user/login', 'UserController::login');
-$routes->post('user/login', 'UserController::login');
-$routes->get('user/register', 'UserController::register');
-$routes->post('user/register', 'UserController::register');
+$routes->get('about', 'Home::about');
+$routes->get('contact', 'Home::contact');
 
-// These routes were previously protected but now accessible without login
-    // Home routes
-    $routes->get('about', 'Home::about');
-    $routes->get('contact', 'Home::contact');
+// Authentication routes
+$routes->group('auth', function($routes) {
+    // Login routes
+    $routes->get('login', 'AuthController::login');
+    $routes->post('login', 'AuthController::attemptLogin');
+    $routes->get('logout', 'AuthController::logout');
     
-    // Publication routes
-    $routes->get('publication', 'Publication::index');
-    $routes->get('publications', 'Publication::index');
+    // Registration routes
+    $routes->get('register', 'AuthController::register');
+    $routes->post('register', 'AuthController::attemptRegister');
+    
+    // Password reset routes
+    $routes->get('forgot-password', 'AuthController::forgotPassword');
+    $routes->post('forgot-password', 'AuthController::attemptForgotPassword');
+    $routes->get('reset-password/(:segment)', 'AuthController::resetPassword/$1');
+    $routes->post('reset-password', 'AuthController::attemptResetPassword');
+    
+    // Email verification routes
+    $routes->get('verify-email/(:segment)', 'AuthController::verifyEmail/$1');
+    $routes->get('resend-verification', 'AuthController::resendVerification');
+});
+
+// Public publication routes
+$routes->get('publications', 'Publication::index');
+$routes->get('publications/view/(:num)', 'Publication::view/$1');
+$routes->get('publications/search', 'Publication::search');
+$routes->post('publications/search', 'Publication::search');
+
+// Protected routes (auth required)
+$routes->group('', ['filter' => 'auth'], function($routes) {
+    // Publication management routes
     $routes->get('publications/upload', 'Publication::upload');
     $routes->get('publications/create', 'Publication::create');
     $routes->post('publications/create', 'Publication::create');
-    $routes->get('publications/view/(:num)', 'Publication::view/$1');
     $routes->get('publications/edit/(:num)', 'Publication::edit/$1');
     $routes->post('publications/edit/(:num)', 'Publication::edit/$1');
     $routes->get('publications/delete/(:num)', 'Publication::delete/$1');
     $routes->get('publications/download/(:num)', 'Publication::download/$1');
-    $routes->get('publications/search', 'Publication::search');
-    $routes->post('publications/search', 'Publication::search');
     
     // Profile routes
     $routes->get('profile', 'ProfileController::index');
     $routes->post('profile/update', 'ProfileController::update');
-    $routes->get('user/logout', 'UserController::logout');
-
-// Protected routes (auth required)
-$routes->group('', ['filter' => 'auth'], function($routes) {
-    // Admin routes
-    $routes->get('admin', 'AdminController::index');
-    $routes->get('admin/manage-users', 'AdminController::manageUsers');
-    $routes->get('admin/manage-submissions', 'AdminController::manageSubmissions');
-    $routes->get('admin/view-analytics', 'AdminController::viewAnalytics');
+    
+    // Admin routes (admin role required)
+    $routes->group('admin', ['filter' => 'auth:admin'], function($routes) {
+        $routes->get('', 'AdminController::index');
+        $routes->get('manage-users', 'AdminController::manageUsers');
+        $routes->get('manage-submissions', 'AdminController::manageSubmissions');
+        $routes->get('view-analytics', 'AdminController::viewAnalytics');
+    });
 });
 
-// API routes
+// API routes (auth required)
 $routes->group('api', ['filter' => 'auth'], function($routes) {
     $routes->get('colleges/(:num)/departments', 'Api::getDepartments/$1');
     $routes->get('departments/(:num)/programs', 'Api::getPrograms/$1');

@@ -60,10 +60,10 @@
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('user/login') ?>">Login</a>
+                            <a class="nav-link" href="<?= base_url('auth/login') ?>">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('user/register') ?>">Register</a>
+                            <a class="nav-link" href="<?= base_url('auth/register') ?>">Register</a>
                         </li>
                     <?php endif; ?>
                 </ul>
