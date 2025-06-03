@@ -110,7 +110,14 @@
               <p>Manage Submissions</p>
             </a>
           </li>
-           <li class="nav-item has-treeview <?= strpos(current_url(), 'admin/users') !== false ? 'menu-open' : '' ?>">
+          <li class="nav-item">
+            <a class="nav-link <?= current_url() == base_url('admin/view-analytics') ? 'active' : '' ?>" href="<?= base_url('admin/view-analytics') ?>">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>View Analytics</p>
+            </a>
+          </li>
+          <?php if (session()->get('role') === 'University Administration'): ?>
+          <li class="nav-item has-treeview <?= strpos(current_url(), 'admin/users') !== false ? 'menu-open' : '' ?>">
             <a href="#" class="nav-link <?= strpos(current_url(), 'admin/users') !== false ? 'active' : '' ?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
@@ -134,17 +141,12 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?= current_url() == base_url('admin/view-analytics') ? 'active' : '' ?>" href="<?= base_url('admin/view-analytics') ?>">
-              <i class="nav-icon fas fa-chart-bar"></i>
-              <p>View Analytics</p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link <?= current_url() == base_url('admin/contact-messages') ? 'active' : '' ?>" href="<?= base_url('admin/contact-messages') ?>">
                 <i class="fas fa-envelope me-2"></i>
-                Contact Messages
+                <p>Contact Messages</p>
             </a>
           </li>
+          <?php endif; ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -63,6 +63,18 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Insert new Terms and Service card below the About EVSU Research Archive card -->
+            <div class="card mt-4">
+                <div class="card-header" id="termsHeader" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#termsCollapse" aria-expanded="false" aria-controls="termsCollapse">
+                    <h5 class="mb-0">Terms and Service</h5>
+                </div>
+                <div class="collapse" id="termsCollapse" aria-labelledby="termsHeader">
+                    <div class="card-body">
+                        <p><strong>Terms and Service</strong> – By using the EVSU Research Archive, you agree to comply with the following terms. You may only upload research publications (including manuscripts, papers, and supplementary materials) that you have authored or for which you have obtained the necessary permissions. You are responsible for ensuring that your uploads do not infringe copyright or other intellectual property rights. The EVSU Research Archive reserves the right to review, moderate, and (if necessary) remove submissions that violate these terms or are deemed inappropriate. In addition, you agree to provide accurate metadata (such as title, authors, abstract, keywords, college, department, program, and publication date) for your uploads. Any personal information (for example, your profile picture and research interests) that you provide shall be used solely for the purposes of the archive and shall not be shared with third parties without your consent. By uploading, you grant EVSU Research Archive a non-exclusive, royalty-free license to host, archive, and publicly display your research (subject to any embargo or access restrictions you specify). EVSU Research Archive is provided "as is" and we do not guarantee that the service will be uninterrupted or error-free. We reserve the right to update these terms at any time; continued use of the archive after such changes constitutes your acceptance of the updated terms.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
