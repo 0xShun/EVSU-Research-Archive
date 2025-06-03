@@ -44,6 +44,16 @@ class ProfileController extends BaseController
             'research_interests'
         ]);
 
+        // Handle profile picture upload
+        $file = $this->request->getFile('profile_picture');
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move('uploads/profiles', $newName);
+            $data['profile_picture'] = 'uploads/profiles/' . $newName;
+             // Update session data with new profile picture path
+            session()->set('profile_picture', $data['profile_picture']);
+        }
+
         // Remove empty fields to prevent overwriting with empty values
         foreach ($data as $key => $value) {
             if (empty($value)) {

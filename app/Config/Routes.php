@@ -97,3 +97,11 @@ if (ENVIRONMENT === 'testing') {
         $routes->get('userexperience', 'Test::userexperience');
     });
 }
+
+// Debug route (temporary)
+$routes->get('debug/session', function() {
+    echo '<pre>';
+    print_r(session()->get());
+    echo '</pre>';
+    die();
+});

@@ -16,7 +16,7 @@ class UserModel extends Model
     protected $allowedFields = [
         'name', 'email', 'password', 'role', 'is_active',
         'email_verified_at', 'verification_token', 'last_login',
-        'login_attempts', 'locked_until'
+        'login_attempts', 'locked_until', 'profile_picture', 'research_interests'
     ];
 
     protected $useTimestamps = true;

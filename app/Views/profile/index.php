@@ -27,16 +27,36 @@
             <h4>Edit Profile</h4>
         </div>
         <div class="card-body">
-            <form action="<?= base_url('profile/update') ?>" method="post">
+            <form action="<?= base_url('profile/update') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
+                <div class="mb-3 text-center">
+                    <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/user-default.png') ?>" 
+                         class="img-thumbnail rounded-circle" 
+                         alt="Profile Picture" 
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                    <p class="mt-2">Role: <?= esc($user['role'] ?? 'N/A') ?></p>
+                </div>
+                <div class="mb-3">
+                    <label for="profile_picture" class="form-label">Upload Profile Picture</label>
+                    <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*">
+                </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?= esc($user['name'] ?? '') ?>" required>
                 </div>
-                <div class="mb-3">
-                    <label for="research_interests" class="form-label">Research Interests</label>
-                    <textarea class="form-control" id="research_interests" name="research_interests" rows="3"><?= esc($user['research_interests'] ?? '') ?></textarea>
+
+                <div class="mb-3" id="research-interests-display">
+                    <label class="form-label">Research Interests:</label>
+                    <p><?= esc($user['research_interests'] ?? 'N/A') ?></p>
+                    <button type="button" class="btn btn-secondary btn-sm" id="edit-research-interests">Edit Research Interests</button>
                 </div>
+
+                <div class="mb-3" id="research-interests-edit" style="display: none;">
+                    <label for="research_interests" class="form-label">Research Interests (comma-separated)</label>
+                    <textarea class="form-control" id="research_interests" name="research_interests" rows="3"><?= esc($user['research_interests'] ?? '') ?></textarea>
+                    <button type="button" class="btn btn-secondary btn-sm mt-2" id="cancel-edit-research-interests">Cancel</button>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Update Profile</button>
             </form>
         </div>
@@ -80,4 +100,31 @@
         <a href="<?= base_url('auth/logout') ?>" class="btn btn-danger">Logout</a>
     </div>
 </div>
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const researchInterestsDisplay = document.getElementById('research-interests-display');
+        const researchInterestsEdit = document.getElementById('research-interests-edit');
+        const editButton = document.getElementById('edit-research-interests');
+        const cancelButton = document.getElementById('cancel-edit-research-interests');
+
+        editButton.addEventListener('click', () => {
+            researchInterestsDisplay.style.display = 'none';
+            researchInterestsEdit.style.display = 'block';
+        });
+
+        cancelButton.addEventListener('click', () => {
+            researchInterestsDisplay.style.display = 'block';
+            researchInterestsEdit.style.display = 'none';
+        });
+
+        // Initially hide the edit section if there are no research interests
+        if (researchInterestsDisplay.querySelector('p').innerText.trim() === 'N/A') {
+             researchInterestsEdit.style.display = 'block';
+             researchInterestsDisplay.style.display = 'none';
+        }
+    });
+</script>
 <?= $this->endSection() ?> 
