@@ -55,13 +55,11 @@
                 <div class="mb-3" id="research-interests-display">
                     <label class="form-label">Research Interests:</label>
                     <p><?= esc($user['research_interests'] ?? 'N/A') ?></p>
-                    <button type="button" class="btn btn-secondary btn-sm" id="edit-research-interests">Edit Research Interests</button>
                 </div>
 
-                <div class="mb-3" id="research-interests-edit" style="display: none;">
+                <div class="mb-3">
                     <label for="research_interests" class="form-label">Research Interests (comma-separated)</label>
                     <textarea class="form-control" id="research_interests" name="research_interests" rows="3"><?= esc($user['research_interests'] ?? '') ?></textarea>
-                    <button type="button" class="btn btn-secondary btn-sm mt-2" id="cancel-edit-research-interests">Cancel</button>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Profile</button>
@@ -237,35 +235,14 @@
 <?= $this->section('scripts') ?>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const researchInterestsDisplay = document.getElementById('research-interests-display');
-        const researchInterestsEdit = document.getElementById('research-interests-edit');
-        const editButton = document.getElementById('edit-research-interests');
-        const cancelButton = document.getElementById('cancel-edit-research-interests');
+        // Removed JavaScript for toggling research interests display
 
-        editButton.addEventListener('click', () => {
-            researchInterestsDisplay.style.display = 'none';
-            researchInterestsEdit.style.display = 'block';
-        });
-
-        cancelButton.addEventListener('click', () => {
-            researchInterestsDisplay.style.display = 'block';
-            researchInterestsEdit.style.display = 'none';
-        });
-
-        // Initially hide the edit section if there are no research interests
-        if (researchInterestsDisplay.querySelector('p').innerText.trim() === 'N/A') {
-             researchInterestsEdit.style.display = 'block';
-             researchInterestsDisplay.style.display = 'none';
-        }
+        // Function to confirm deletion (keep if needed for publications)
+        window.confirmDelete = function(id) {
+            if (confirm('Are you sure you want to delete this publication?')) {
+                window.location.href = '<?= base_url('publications/delete/') ?>' + id;
+            }
+        };
     });
-
-    function confirmDelete(id) {
-        if (confirm('Are you sure you want to delete this publication?')) {
-            window.location.href = '<?= base_url('publications/delete/') ?>' + id;
-        }
-    }
-
-    // Removed dynamic department and program loading JavaScript
-
 </script>
 <?= $this->endSection() ?> 

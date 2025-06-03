@@ -21,8 +21,10 @@ class Home extends BaseController
 
     public function index()
     {
-        // Get latest publications
-        $latestPublications = $this->publicationModel->orderBy('publication_date', 'DESC')
+        // Get latest approved publications
+        $latestPublications = $this->publicationModel
+                                                    ->where('status', 'approved')
+                                                    ->orderBy('publication_date', 'DESC')
                                                     ->limit(6)
                                                     ->find();
 

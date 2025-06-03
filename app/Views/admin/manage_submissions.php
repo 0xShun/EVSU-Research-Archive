@@ -18,7 +18,7 @@
             <?php foreach ($submissions as $submission): ?>
                 <tr>
                     <td><?= $submission['id'] ?></td>
-                    <td><?= esc($submission['title']) ?></td>
+                    <td><a href="<?= base_url('publications/view/' . $submission['id']) ?>"><?= esc($submission['title']) ?></a></td>
                     <td><?= esc($submission['authors']) ?></td>
                     <td><?= esc($submission['department_name']) ?></td>
                     <td>

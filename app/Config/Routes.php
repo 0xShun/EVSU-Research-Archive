@@ -78,7 +78,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
         $routes->get('submissions/reject/(:num)', 'AdminController::rejectSubmission/$1');
 
         // Routes restricted to University Administration only (protected by 'admin' filter)
-        $routes->group('', ['filter' => 'admin'], function($routes) {
+        $routes->group('', function($routes) {
             $routes->get('manage-users', 'AdminController::manageUsers');
             $routes->get('contact-messages', 'AdminController::contactMessages');
             

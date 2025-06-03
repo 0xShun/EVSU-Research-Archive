@@ -116,7 +116,6 @@
               <p>View Analytics</p>
             </a>
           </li>
-          <?php if (session()->get('role') === 'University Administration'): ?>
           <li class="nav-item has-treeview <?= strpos(current_url(), 'admin/users') !== false ? 'menu-open' : '' ?>">
             <a href="#" class="nav-link <?= strpos(current_url(), 'admin/users') !== false ? 'active' : '' ?>">
               <i class="nav-icon fas fa-users"></i>
@@ -146,7 +145,6 @@
                 <p>Contact Messages</p>
             </a>
           </li>
-          <?php endif; ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -187,6 +185,15 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+        <?php if (session()->getFlashdata('error')): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('error') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <?php endif; ?>
+
         <?= $this->renderSection('content') ?>
       </div><!-- /.container-fluid -->
     </div>

@@ -107,5 +107,10 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        // 'csrf'          => ['before' => ['login', 'register', 'auth/*', 'forgot-password', 'reset-password']],
+        // 'auth'          => ['before' => ['admin/*', 'profile/*']],
+        // 'admin'         => ['before' => ['admin/*']], // Remove or comment this line
+        'adminAccess'   => ['before' => ['admin/*']],
+    ];
 }
