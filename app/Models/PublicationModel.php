@@ -22,7 +22,8 @@ class PublicationModel extends Model
         'publication_date',
         'file_path',
         'thumbnail',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     protected $useTimestamps = true;

@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
                 'name'     => 'Admin User',
                 'email'    => 'admin@example.com',
                 'password' => password_hash('password', PASSWORD_DEFAULT), // ** Change 'password' to a strong password **
-                'role'     => 'University Administration',
+                'role'     => 'University Administration', // Ensure this matches the role name in Auth config
                 'is_active' => true,
             ];
 

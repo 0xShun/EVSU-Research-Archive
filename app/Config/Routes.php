@@ -16,7 +16,8 @@ $routes->set404Override();
 // Public routes (no auth required)
 $routes->get('/', 'Home::index');
 $routes->get('about', 'Home::about');
-$routes->get('contact', 'Home::contact');
+$routes->get('contact', 'Home::contact'); // For displaying the form
+$routes->post('contact', 'Home::submitContact'); // For processing form submission
 
 // Authentication routes
 $routes->group('auth', function($routes) {
@@ -55,18 +56,39 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('publications/edit/(:num)', 'Publication::edit/$1');
     $routes->post('publications/edit/(:num)', 'Publication::edit/$1');
     $routes->get('publications/delete/(:num)', 'Publication::delete/$1');
+    $routes->post('publications/delete/(:num)', 'Publication::delete/$1');
     $routes->get('publications/download/(:num)', 'Publication::download/$1');
     
+    // Route for updating publication from profile modal
+    $routes->post('publications/updateFromModal/(:num)', 'Publication::updateFromProfileModal/$1');
+
     // Profile routes
     $routes->get('profile', 'ProfileController::index');
     $routes->post('profile/update', 'ProfileController::update');
     
     // Admin routes (admin role required)
-    $routes->group('admin', ['filter' => 'auth:admin'], function($routes) {
+    $routes->group('admin', ['filter' => 'auth:University Administration'], function($routes) {
         $routes->get('', 'AdminController::index');
         $routes->get('manage-users', 'AdminController::manageUsers');
         $routes->get('manage-submissions', 'AdminController::manageSubmissions');
         $routes->get('view-analytics', 'AdminController::viewAnalytics');
+        $routes->get('contact-messages', 'AdminController::contactMessages');
+        
+        // Publication Management Routes
+        $routes->get('publications', 'AdminController::managePublications');
+        $routes->post('publications/update/(:num)', 'AdminController::updatePublication/$1');
+        $routes->get('publications/approve/(:num)', 'AdminController::approvePublication/$1');
+        
+        // User Management Routes
+        $routes->get('users/create', 'AdminController::createUser');
+        $routes->post('users/store', 'AdminController::storeUser');
+        $routes->get('users/edit/(:num)', 'AdminController::editUser/$1');
+        $routes->post('users/update/(:num)', 'AdminController::updateUser/$1');
+        $routes->get('users/delete/(:num)', 'AdminController::deleteUser/$1');
+
+        // Submission Management Routes
+        $routes->get('submissions/approve/(:num)', 'AdminController::approveSubmission/$1');
+        $routes->get('submissions/reject/(:num)', 'AdminController::rejectSubmission/$1');
     });
 });
 

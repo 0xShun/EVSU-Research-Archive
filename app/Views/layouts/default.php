@@ -35,9 +35,6 @@
                         <a class="nav-link" href="<?= base_url('publications') ?>">Publications</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('publications/search') ?>">Search</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('about') ?>">About</a>
                     </li>
                     <li class="nav-item">
@@ -46,8 +43,8 @@
                     <?php if (session()->get('isLoggedIn')): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="<?= base_url('assets/user-default.png') ?>" alt="Profile Picture" class="rounded-circle me-1" style="width: 30px; height: 30px;">
-                                <?= session()->get('name') // Using 'name' as per actors table ?>
+                                <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/user-default.png') ?>" alt="Profile Picture" class="rounded-circle me-1" style="width: 30px; height: 30px; object-fit: cover;">
+                                <?= session()->get('name')?>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profile</a></li>

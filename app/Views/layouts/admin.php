@@ -31,7 +31,7 @@
       <?php if (session()->get('isLoggedIn')): ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/img/user-default.png') ?>" 
+            <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/user-default.png') ?>" 
                  class="img-circle elevation-2" 
                  alt="User Image" 
                  style="width: 30px; height: 30px; object-fit: cover;">
@@ -47,7 +47,7 @@
               </a>
             <?php endif; ?>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="<?= base_url('user/logout') ?>">
+            <a class="dropdown-item" href="<?= base_url('auth/logout') ?>">
               <i class="fas fa-sign-out-alt mr-2"></i> Logout
             </a>
           </div>
@@ -74,9 +74,9 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="<?= base_url() ?>" class="brand-link">
+    <!-- <a href="<?= base_url() ?>" class="brand-link">
       <img src="https://i.imgur.com/4GYD4hu.png" alt="EVSU Logo" class="brand-image img-circle elevation-3" style="height: 40px; width: auto;">
-    </a>
+    </a> -->
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -84,7 +84,7 @@
       <?php if (session()->get('isLoggedIn')): ?>
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/img/user-default.png') ?>" 
+            <img src="<?= base_url(session()->get('profile_picture') ?? 'assets/user-default.png') ?>" 
                  class="img-circle elevation-2" 
                  alt="User Image"
                  style="width: 40px; height: 40px; object-fit: cover;">
@@ -99,27 +99,50 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="<?= base_url() ?>" class="nav-link <?= current_url() == base_url() ? 'active' : '' ?>">
+            <a href="<?= base_url('admin') ?>" class="nav-link <?= current_url() == base_url('admin') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="<?= base_url('publications') ?>" class="nav-link <?= strpos(current_url(), 'publications') !== false ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-book"></i>
-              <p>Publications</p>
+            <a href="<?= base_url('admin/manage-submissions') ?>" class="nav-link <?= strpos(current_url(), 'admin/manage-submissions') !== false ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>Manage Submissions</p>
+            </a>
+          </li>
+           <li class="nav-item has-treeview <?= strpos(current_url(), 'admin/users') !== false ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= strpos(current_url(), 'admin/users') !== false ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Manage Users
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('admin/manage-users') ?>" class="nav-link <?= current_url() == base_url('admin/manage-users') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View All Users</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('admin/users/create') ?>" class="nav-link <?= current_url() == base_url('admin/users/create') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add New User</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <?= current_url() == base_url('admin/view-analytics') ? 'active' : '' ?>" href="<?= base_url('admin/view-analytics') ?>">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>View Analytics</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="<?= base_url('about') ?>" class="nav-link <?= strpos(current_url(), 'about') !== false ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-info-circle"></i>
-              <p>About</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="<?= base_url('contact') ?>" class="nav-link <?= strpos(current_url(), 'contact') !== false ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-envelope"></i>
-              <p>Contact</p>
+            <a class="nav-link <?= current_url() == base_url('admin/contact-messages') ? 'active' : '' ?>" href="<?= base_url('admin/contact-messages') ?>">
+                <i class="fas fa-envelope me-2"></i>
+                Contact Messages
             </a>
           </li>
         </ul>
@@ -169,8 +192,8 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer mt-auto">
-    <div class="float-right d-none d-sm-inline">
+  <footer class="main-footer mt-auto text-center">
+    <div class="d-none d-sm-inline">
       v1.0.0
     </div>
     <strong>Copyright &copy; <?= date('Y') ?> <a href="https://www.evsu.edu.ph">Eastern Visayas State University</a>.</strong> All rights reserved.

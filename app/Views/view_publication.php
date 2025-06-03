@@ -6,7 +6,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url() ?>" class="text-danger">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?= base_url('publication') ?>" class="text-danger">Publications</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('publications') ?>" class="text-danger">Publications</a></li>
                 <li class="breadcrumb-item active"><?= esc($publication['title']) ?></li>
             </ol>
         </nav>

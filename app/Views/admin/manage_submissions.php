@@ -20,10 +20,16 @@
                     <td><?= $submission['id'] ?></td>
                     <td><?= esc($submission['title']) ?></td>
                     <td><?= esc($submission['authors']) ?></td>
-                    <td><?= esc($submission['department_id']) ?></td>
+                    <td><?= esc($submission['department_name']) ?></td>
                     <td>
-                        <a href="<?= base_url('admin/approve-submission/' . $submission['id']) ?>" class="btn btn-sm btn-success">Approve</a>
-                        <a href="<?= base_url('admin/reject-submission/' . $submission['id']) ?>" class="btn btn-sm btn-danger">Reject</a>
+                        <?php if ($submission['status'] === 'pending'): ?>
+                            <a href="<?= base_url('admin/submissions/approve/' . $submission['id']) ?>" class="btn btn-sm btn-success">Approve</a>
+                            <a href="<?= base_url('admin/submissions/reject/' . $submission['id']) ?>" class="btn btn-sm btn-danger">Reject</a>
+                        <?php elseif ($submission['status'] === 'approved'): ?>
+                            <span class="badge badge-success" style="color:rgb(0, 255, 51);">Approved</span>
+                        <?php else:  ?>
+                            <span class="badge badge-danger" style="color:rgb(255, 0, 0);">Rejected</span>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

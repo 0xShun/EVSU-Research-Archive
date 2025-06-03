@@ -32,6 +32,9 @@ class Publication extends BaseController
 
         $query = $this->publicationModel->builder();
 
+        // Only show approved publications on the public listing
+        $query->where('publications.status', 'approved');
+
         if ($department_id) {
             $query->where('department_id', $department_id);
         }
@@ -97,6 +100,10 @@ class Publication extends BaseController
 
     public function create()
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('auth/login');
+        }
+
         $rules = [
             'title' => 'required|min_length[3]|max_length[255]',
             'authors' => 'required|min_length[3]|max_length[255]',
@@ -126,12 +133,14 @@ class Publication extends BaseController
             'department_id' => $this->request->getPost('department_id'),
             'program_id' => $this->request->getPost('program_id'),
             'publication_date' => $this->request->getPost('publication_date'),
-            'file_path' => 'uploads/publications/' . $fileName
+            'file_path' => 'uploads/publications/' . $fileName,
+            'user_id' => session()->get('user_id'),
+            'status' => 'pending'
         ];
 
         $this->publicationModel->insert($data);
 
-        return redirect()->to('publication')->with('message', 'Publication uploaded successfully.');
+        return redirect()->to('profile')->with('message', 'Publication uploaded successfully and is pending approval.');
     }
 
     public function view($id)
@@ -167,80 +176,86 @@ class Publication extends BaseController
 
     public function edit($id)
     {
+        log_message('debug', 'Entering Publication::edit method for ID: ' . $id . '. Request Method: ' . $this->request->getMethod());
+
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('auth/login');
+        }
+
         $publication = $this->publicationModel->find($id);
 
         if (!$publication) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        return view('edit_publication', ['publication' => $publication]);
-    }
-
-    public function update($id)
-    {
-        $publication = $this->publicationModel->find($id);
-
-        if (!$publication) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        // Check if the user owns this publication
+        if ($publication['user_id'] != session()->get('user_id')) {
+            return redirect()->to('profile')->with('error', 'You do not have permission to edit this publication.');
         }
 
-        $rules = [
-            'title' => 'required|min_length[3]|max_length[255]',
-            'authors' => 'required|min_length[3]|max_length[255]',
-            'abstract' => 'required|min_length[10]',
-            'keywords' => 'required|min_length[3]',
-            'college_id' => 'required|numeric',
-            'department_id' => 'required|numeric',
-            'program_id' => 'required|numeric',
-            'publication_date' => 'required|valid_date'
-        ];
+        // Handle form submission for updating
+        if ($this->request->getMethod() === 'post') {
+            log_message('debug', 'Processing POST request for publication update');
 
-        if ($this->request->getFile('file')->isValid()) {
-            $rules['file'] = 'uploaded[file]|max_size[file,10240]|mime_in[file,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]';
-        }
+            // Get only the fields we want to update
+            $data = [
+                'title' => $this->request->getPost('title'),
+                'authors' => $this->request->getPost('authors'),
+                'abstract' => $this->request->getPost('abstract'),
+                'keywords' => $this->request->getPost('keywords'),
+                'college_id' => $this->request->getPost('college_id'),
+                'department_id' => $this->request->getPost('department_id'),
+                'program_id' => $this->request->getPost('program_id'),
+                'publication_date' => $this->request->getPost('publication_date'),
+                'user_id' => session()->get('user_id'),
+                'status' => 'pending'
+            ];
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
+            log_message('debug', 'Update data: ' . print_r($data, true));
 
-        $data = [
-            'title' => $this->request->getPost('title'),
-            'authors' => $this->request->getPost('authors'),
-            'abstract' => $this->request->getPost('abstract'),
-            'keywords' => $this->request->getPost('keywords'),
-            'college_id' => $this->request->getPost('college_id'),
-            'department_id' => $this->request->getPost('department_id'),
-            'program_id' => $this->request->getPost('program_id'),
-            'publication_date' => $this->request->getPost('publication_date')
-        ];
-
-        $file = $this->request->getFile('file');
-        if ($file->isValid()) {
-            // Delete old file
-            if (!empty($publication['file_path'])) {
-                $oldFile = WRITEPATH . $publication['file_path'];
-                if (file_exists($oldFile)) {
-                    unlink($oldFile);
+            try {
+                if ($this->publicationModel->update($id, $data)) {
+                    log_message('debug', 'Publication updated successfully');
+                    return redirect()->to('profile')->with('success', 'Publication updated successfully and is pending approval.');
+                } else {
+                    log_message('error', 'Model update returned false');
+                    return redirect()->to('profile')->with('error', 'Failed to update publication. Please try again.');
                 }
+            } catch (\Exception $e) {
+                log_message('error', 'Exception during update: ' . $e->getMessage());
+                return redirect()->to('profile')->with('error', 'An error occurred while updating the publication.');
             }
-
-            // Upload new file
-            $fileName = $file->getRandomName();
-            $file->move(WRITEPATH . 'uploads/publications', $fileName);
-            $data['file_path'] = 'uploads/publications/' . $fileName;
         }
 
-        $this->publicationModel->update($id, $data);
+        // Load the edit form for GET requests
+        $colleges = $this->collegeModel->findAll();
+        $departments = $this->departmentModel->where('college_id', $publication['college_id'])->findAll();
+        $programs = $this->programModel->where('department_id', $publication['department_id'])->findAll();
 
-        return redirect()->to('publication/view/' . $id)->with('message', 'Publication updated successfully.');
+        return view('edit_publication', [
+            'title' => 'Edit Publication',
+            'publication' => $publication,
+            'colleges' => $colleges,
+            'departments' => $departments,
+            'programs' => $programs
+        ]);
     }
 
     public function delete($id)
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('auth/login');
+        }
+
         $publication = $this->publicationModel->find($id);
 
         if (!$publication) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        // Check if the user owns this publication
+        if ($publication['user_id'] != session()->get('user_id')) {
+            return redirect()->to('profile')->with('error', 'You do not have permission to delete this publication.');
         }
 
         // Delete file
@@ -253,7 +268,7 @@ class Publication extends BaseController
 
         $this->publicationModel->delete($id);
 
-        return redirect()->to('publication')->with('message', 'Publication deleted successfully.');
+        return redirect()->to('profile')->with('message', 'Publication deleted successfully.');
     }
 
     public function download($id)
@@ -282,6 +297,9 @@ class Publication extends BaseController
         $category = $this->request->getGet('category');
 
         $query = $this->publicationModel->builder();
+
+        // Only search approved publications
+        $query->where('publications.status', 'approved');
 
         if ($keyword) {
             $query->groupStart()
@@ -320,6 +338,64 @@ class Publication extends BaseController
         ];
 
         return view('search', $data);
+    }
+
+    public function updateFromProfileModal($id)
+    {
+        log_message('debug', 'Entering Publication::updateFromProfileModal method for ID: ' . $id);
+
+        if (!session()->get('isLoggedIn')) {
+            log_message('debug', 'User not logged in. Redirecting to login.');
+            return redirect()->to('auth/login');
+        }
+
+        $publication = $this->publicationModel->find($id);
+
+        if (!$publication) {
+            log_message('error', 'Publication not found for ID: ' . $id);
+            return redirect()->to('profile')->with('error', 'Publication not found.');
+        }
+
+        // Check if the user owns this publication
+        if ($publication['user_id'] != session()->get('user_id')) {
+            log_message('warning', 'User ' . session()->get('user_id') . ' attempted to edit publication ' . $id . ' they do not own.');
+            return redirect()->to('profile')->with('error', 'You do not have permission to edit this publication.');
+        }
+
+        // Get only the fields allowed for update from the modal
+        $data = [
+            'title' => $this->request->getPost('title'),
+            'authors' => $this->request->getPost('authors'),
+            'abstract' => $this->request->getPost('abstract'),
+            'keywords' => $this->request->getPost('keywords'),
+            'college_id' => $this->request->getPost('college_id'),
+            'department_id' => $this->request->getPost('department_id'),
+            'program_id' => $this->request->getPost('program_id'),
+            'publication_date' => $this->request->getPost('publication_date'),
+            // Status is set to pending on update from profile
+            'status' => 'pending'
+        ];
+
+        // Clean up data - remove nulls or empty strings if necessary, but keep 0 for IDs if valid input
+        $cleanedData = array_filter($data, function($value) {
+            return $value !== null && $value !== '';
+        });
+
+        log_message('debug', 'Attempting to update publication with data: ' . print_r($cleanedData, true));
+
+        try {
+            if ($this->publicationModel->update($id, $cleanedData)) {
+                log_message('debug', 'Publication updated successfully via modal for ID: ' . $id);
+                return redirect()->to('profile')->with('success', 'Publication updated successfully and is pending approval.');
+            } else {
+                // This might indicate a database error not caught by exception
+                log_message('error', 'Model update returned false for ID: ' . $id);
+                return redirect()->to('profile')->with('error', 'Failed to update publication. Please try again.');
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Exception during modal update for ID ' . $id . ': ' . $e->getMessage());
+            return redirect()->to('profile')->with('error', 'An error occurred while updating the publication.');
+        }
     }
 
     private function getPublicationStats()

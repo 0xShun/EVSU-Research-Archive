@@ -8,17 +8,19 @@
                 <div class="card-body">
                     <h2 class="card-title mb-4">Edit Publication</h2>
                     
-                    <?php if (session()->has('errors')): ?>
+                    <?php if (session()->has('error')): ?>
                         <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                <?php foreach (session('errors') as $error): ?>
-                                    <li><?= esc($error) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
+                            <?= session('error') ?>
                         </div>
                     <?php endif; ?>
 
-                    <form action="<?= base_url('publication/update/' . $publication['id']) ?>" method="post" enctype="multipart/form-data">
+                    <?php if (session()->has('success')): ?>
+                        <div class="alert alert-success">
+                            <?= session('success') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="<?= base_url('publications/edit/' . $publication['id']) ?>" method="post">
                         <?= csrf_field() ?>
                         
                         <div class="mb-3">
@@ -83,14 +85,8 @@
                             <input type="date" class="form-control" id="publication_date" name="publication_date" value="<?= date('Y-m-d', strtotime($publication['publication_date'])) ?>" required>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="file" class="form-label">Publication File</label>
-                            <input type="file" class="form-control" id="file" name="file">
-                            <div class="form-text">Current file: <?= esc($publication['file_name']) ?></div>
-                        </div>
-
                         <div class="d-flex justify-content-between">
-                            <a href="<?= base_url('publication/view/' . $publication['id']) ?>" class="btn btn-secondary">Cancel</a>
+                            <a href="<?= base_url('profile') ?>" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">Update Publication</button>
                         </div>
                     </form>
